@@ -12,14 +12,12 @@ const checkEmail = (email) => {
 
 const allUsers = async (req, res) => {
   const users = await db("users");
-  res.json(users.filter((user) => user.name != "adminone"));
+  res.json(users.filter((user) => user.name != "admin"));
 };
 
 const withdrwal = async (req, res) => {
   const users = await db("users");
-  res.json(
-    users.filter((user) => user.withdrwal > 0 && user.name != "adminone")
-  );
+  res.json(users.filter((user) => user.withdrwal > 0 && user.name != "admin"));
 };
 
 const deposited = async (req, res) => {
