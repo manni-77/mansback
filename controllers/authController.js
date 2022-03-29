@@ -94,6 +94,8 @@ module.exports.signup = (req, res) => {
             profits: 0,
             withdrwal: 0,
             referral: 0,
+            pdgwdl: 0,
+            due: 0
           })
           .then((user) => {
             const token = createToken({ email, admin: false });
@@ -211,7 +213,7 @@ module.exports.wdecline = async (req, res) => {
 module.exports.user = async (req, res) => {
   const { email } = req.body;
   const userz = await db.select("*").from("users").where({ email });
-  const { name, deposit, admin, profits, withdrwal, referral, address, phone } =
+  const { name, deposit, admin, profits, withdrwal, referral, address, phone, pdgwdl, due } =
     userz[0];
   const user = {
     name,
@@ -223,6 +225,8 @@ module.exports.user = async (req, res) => {
     referral,
     address,
     phone,
+    pdgwdl,
+    due
   };
   res.json(user);
 };
@@ -255,6 +259,8 @@ module.exports.login = (req, res) => {
             referral: user[0].referral,
             address: user[0].address,
             phone: user[0].phone,
+            pdgwl: user[0].pdgwdl,
+            due: user[0].due
           };
           if (match) {
             const token = createToken({
