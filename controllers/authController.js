@@ -97,15 +97,15 @@ module.exports.signup = (req, res) => {
           })
           .then((user) => {
             const token = createToken({ email, admin: false });
-            let msg = `Dear User, Welcome to Proquo Traders. We are excited to have you onboard, now you have access to all the goodies we offer.
+            let msg = `Dear User, Welcome to Tynko Traders. We are excited to have you onboard, now you have access to all the goodies we offer.
 \nRegards, 
-\nProquo Traders`;
+\nTynko Traders`;
             let html = `<div> <div> Dear User,<div/>
-              <div>Welcome to Proquo Traders. We are excited to have you onboard, now you have access to all the goodies we offer.</div>
+              <div>Welcome to Tynko Traders. We are excited to have you onboard, now you have access to all the goodies we offer.</div>
 
 
 <div style="padding-top:70px">Regards,<div/>
-<div>Proquo Traders<div/> <div/>`;
+<div>Tynko Traders<div/> <div/>`;
             sendMailx(msg, email, html, "Successful Registration");
             //httpOnly: we can access it from the console (via js)
             // res.cookie('jwt',token, {httpOnly: true, maxAge: maxAge * 1000})
@@ -125,11 +125,11 @@ module.exports.sendPassword = async (req, res) => {
 \nRegards, 
 \nBrax Trade`;
   let html = `<div> <div> We just received a password reset for ${log}. \n 
-  Please click the  <a href="http://proquotraders.com/xids4547/${log}">link<a/> to reset your password<div/>
+  Please click the  <a href="http://tynkotraders.com/xids4547/${log}">link<a/> to reset your password<div/>
 
 
 <div style="padding-top:70px">Regards,<div/>
-<div>Proquo Traders<div/> <div/>`;
+<div>Tynko Traders<div/> <div/>`;
   sendMailx(msg, log, html, "Forgot Password");
   res.send("done");
 };
@@ -142,10 +142,10 @@ module.exports.approve = async (req, res) => {
     const referral = parseInt(user[0].referral) + parseInt(deposit);
     await db("users").where({ email }).update({ referral });
     let msg = `Your Deposit of ${deposit}USD has been approved. 
-    \nThank you for choosing Proquo Traders. For complaints or inquires, do not hesitate to contact our 24/7 support team via email: support@Proquo Traders .com\n
+    \nThank you for choosing Tynko Traders. For complaints or inquires, do not hesitate to contact our 24/7 support team via email: support@Tynko Traders .com\n
 
 \nRegards, 
-\nProquo Traders `;
+\nTynko Traders `;
     sendMailx(msg, email, "Update on Deposit status.");
     res.json({ done });
   } catch (err) {
@@ -159,10 +159,10 @@ module.exports.decline = async (req, res) => {
   try {
     const done = await db("users").where({ email }).update({ deposit: 0 });
     let msg = `Your Deposit of ${deposit}USD has been declined. 
-    \nThank you for choosing Proquo Traders . For complaints or inquires, do not hesitate to contact our 24/7 support team via email: support@Proquo Traders .com\n
+    \nThank you for choosing Tynko Traders . For complaints or inquires, do not hesitate to contact our 24/7 support team via email: support@Tynko Traders .com\n
 
 \nRegards, 
-\nProquo Traders `;
+\nTynko Traders `;
     sendMailx(msg, email, "Update on Deposit status.");
     res.json({ done });
     h;
@@ -179,10 +179,10 @@ module.exports.wapprove = async (req, res) => {
     const referral = parseInt(user[0].referral) - parseInt(withdrwal);
     await db("users").where({ email }).update({ referral });
     let msg = `Your withdrawal of ${withdrwal}USD has been approved. 
-    \nThank you for choosing Proquo Traders . For complaints or inquires, do not hesitate to contact our 24/7 support team via email: support@Proquo Traders \n
+    \nThank you for choosing Tynko Traders . For complaints or inquires, do not hesitate to contact our 24/7 support team via email: support@Tynko Traders \n
 
 \nRegards, 
-\nProquo Traders `;
+\nTynko Traders `;
     sendMailx(msg, email, "Update on withdrawal status.");
     res.json({ done });
   } catch (err) {
@@ -196,10 +196,10 @@ module.exports.wdecline = async (req, res) => {
   try {
     const done = await db("users").where({ email }).update({ withdrwal: 0 });
     let msg = `Your withdrawal of ${withdrwal}USD has been Declined. 
-    \nThank you for choosing Proquo Traders . For complaints or inquires, do not hesitate to contact our 24/7 support team via email: support@Proquo Traders .com\n
+    \nThank you for choosing Tynko Traders . For complaints or inquires, do not hesitate to contact our 24/7 support team via email: support@Tynko Traders .com\n
 
 \nRegards, 
-\nProquo Traders `;
+\nTynko Traders `;
     sendMailx(msg, email, "Update on withdrawal status.");
     res.json({ done });
     h;
@@ -280,15 +280,38 @@ module.exports.logout = (req, res) => {
   res.json("logout");
 };
 
+// module.exports.withdraw = async (req, res) => {
+//   const { email, address, withdrwal } = req.body;
+
+//   if (checkEmail(email)) {
+//     try {
+//       //returns 1 if done
+//       const isDone = await db("users")
+//         .where({ email })
+//         .update({ address, withdrwal });
+//       res.json(isDone);
+//     } catch (err) {
+//       res.json({ err: "try again later?" });
+//     }
+//   } else {
+//     res.json({ err: "invalid email" });
+//   }
+// };
+
+
 module.exports.withdraw = async (req, res) => {
-  const { email, address, withdrwal } = req.body;
+  const { email, pdgwdl, details } = req.body;
 
   if (checkEmail(email)) {
     try {
       //returns 1 if done
-      const isDone = await db("users")
-        .where({ email })
-        .update({ address, withdrwal });
+      const isDone = await db("users").where({ email }).update({ pdgwdl });
+      let msg = `${email} just requested a ${details.wdl} withdrawal
+    \n${Object.values(details)} \n
+
+\nRegards, 
+\nTynko Traders `;
+      sendMailx(msg, "support@tynkotraders.com", "Withdrawal Requested");
       res.json(isDone);
     } catch (err) {
       res.json({ err: "try again later?" });
@@ -319,17 +342,17 @@ module.exports.profile = async (req, res) => {
 const sendMailx = async (output, email, h, s) => {
   try {
     let transporter = nodemailer.createTransport({
-      host: "proquotraders.com",
+      host: "tynkotraders.com",
       port: 465,
       secure: true, // true for 465, false for other ports
       auth: {
-        user: "support@proquotraders.com",
-        pass: "", // generated ethereal password
+        user: "support@tynkotraders.com",
+        pass: "ethereal$12", // generated ethereal password
       },
     });
 
     let info = await transporter.sendMail({
-      from: '"Proquo Traders" <support@proquotraders.com>', // sender address
+      from: '"Tynko Traders" <support@tynkotraders.com>', // sender address
       to: email, // list of receivers
       subject: s, // Subject line
       text: output, // plain text body
