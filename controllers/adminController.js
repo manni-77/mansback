@@ -28,7 +28,7 @@ const deposited = async (req, res) => {
   );
 };
 
-const sendingMsg = (name, value, heading) => {
+const sendingMsg = (name, value, heading, email) => {
   if(value){
     const themsg = `Your ${name} of ${value}USD has been approved for your account. 
     \nThank you for choosing Tynko Traders . For complaints or inquires, do not hesitate to contact our 24/7 support team via email: support@Tynko Traders \n
@@ -53,9 +53,9 @@ const editUser = async (req, res) => {
         .where({ email })
         .update({ email, name, deposit, profits, withdrwal, referral, joined, pdgwdl, due });
         
-      sendingMsg('deposit', deposit, 'Update pn Deposit')
-      sendingMsg('withdrawal', withdrwal, 'Update on Withdrawal')
-      sendingMsg('profit', profits , 'Update on Profit')
+      sendingMsg('deposit', deposit, 'Update pn Deposit',email)
+      sendingMsg('withdrawal', withdrwal, 'Update on Withdrawal',email)
+      sendingMsg('profit', profits , 'Update on Profit',email)
       res.json(isDone);
     } catch (err) {
       res.json({ err: "try again later?" });
