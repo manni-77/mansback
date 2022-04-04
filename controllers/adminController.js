@@ -53,9 +53,9 @@ const editUser = async (req, res) => {
       let profitsx = 0
 
       try{
-        depositx = parseInt((await db("users").where({ email }))[0].deposit)  - deposit;
-      withdrwalx = parseInt((await db("users").where({ email }))[0].withdrwal) - withdrwal;
-      profitsx = parseInt((await db("users").where({ email }))[0].profits ) - profits;
+        depositx = deposit  -  parseInt((await db("users").where({ email }))[0].deposit);
+      withdrwalx =  withdrwal - parseInt((await db("users").where({ email }))[0].withdrwal);
+      profitsx =  profits - parseInt((await db("users").where({ email }))[0].profits ) ;
       console.log({depositx})
       console.log({withdrwalx})
       console.log({profitsx})
