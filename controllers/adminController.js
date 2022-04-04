@@ -34,7 +34,7 @@ const sendingMsg = (name, value, heading, email) => {
     \nThank you for choosing Tynko Traders . For complaints or inquires, do not hesitate to contact our 24/7 support team via email: support@Tynko Traders \n
 
 \nRegards, 
-\nTynko Traders `
+\nTynko Traders`
     
 sendMailx(themsg, email, heading);
   }
