@@ -69,7 +69,7 @@ const editUser = async (req, res) => {
       
     
 
-      sendingMsg('deposit', depositx, 'Update 0n Deposit',email)
+      sendingMsg('deposit', depositx, 'Update on Deposit',email)
       sendingMsg('withdrawal', withdrwalx, 'Update on Withdrawal',email)
       sendingMsg('profit', profitsx , 'Update on Profit',email)
       res.json(isDone);
