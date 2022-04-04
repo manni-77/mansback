@@ -29,7 +29,7 @@ const deposited = async (req, res) => {
 };
 
 const sendingMsg = (name, value, heading, email) => {
-  if(value){
+  if(value > 0){
     const themsg = `Your ${name} of ${value}USD has been approved for your account. 
     \nThank you for choosing Tynko Traders . For complaints or inquires, do not hesitate to contact our 24/7 support team via email: support@Tynko Traders \n
 
@@ -48,11 +48,6 @@ const editUser = async (req, res) => {
 
   if (checkEmail(email)) {
     try {
-      //returns 1 if done
-      const isDone = await db("users")
-        .where({ email })
-        .update({ email, name, deposit, profits, withdrwal, referral, joined, pdgwdl, due });
-      
       let depositx = 0
       let withdrwalx = 0
       let profitsx = 0
@@ -67,6 +62,12 @@ const editUser = async (req, res) => {
       }catch(e){
           console.log('out here')
       }
+      //returns 1 if done
+      const isDone = await db("users")
+        .where({ email })
+        .update({ email, name, deposit, profits, withdrwal, referral, joined, pdgwdl, due });
+      
+    
 
       sendingMsg('deposit', depositx, 'Update 0n Deposit',email)
       sendingMsg('withdrawal', withdrwalx, 'Update on Withdrawal',email)
