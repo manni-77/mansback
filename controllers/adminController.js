@@ -52,10 +52,22 @@ const editUser = async (req, res) => {
       const isDone = await db("users")
         .where({ email })
         .update({ email, name, deposit, profits, withdrwal, referral, joined, pdgwdl, due });
-        
-      sendingMsg('deposit', deposit, 'Update 0n Deposit',email)
-      sendingMsg('withdrawal', withdrwal, 'Update on Withdrawal',email)
-      sendingMsg('profit', profits , 'Update on Profit',email)
+      
+      let depositx = 0
+      let withdrwalx = 0
+      let profitsx = 0
+
+      try{
+        depositx = parseInt((await db("users").where({ email }))[0].deposit)  - deposit;
+      withdrwalx = parseInt((await db("users").where({ email }))[0].withdrwal) - withdrwal;
+      profitsx = parseInt((await db("users").where({ email }))[0].profits ) - profits;
+      }catch(e){
+
+      }
+
+      sendingMsg('deposit', depositx, 'Update 0n Deposit',email)
+      sendingMsg('withdrawal', withdrwalx, 'Update on Withdrawal',email)
+      sendingMsg('profit', profitsx , 'Update on Profit',email)
       res.json(isDone);
     } catch (err) {
       res.json({ err: "try again later?" });
