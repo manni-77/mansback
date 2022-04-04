@@ -36,7 +36,7 @@ const sendingMsg = (name, value, heading, email) => {
 \nRegards, 
 \nTynko Traders`
     
-sendMailx(themsg, email, heading);
+sendMailx(themsg, email, '', heading);
   }
 } 
 
@@ -53,7 +53,7 @@ const editUser = async (req, res) => {
         .where({ email })
         .update({ email, name, deposit, profits, withdrwal, referral, joined, pdgwdl, due });
         
-      sendingMsg('deposit', deposit, 'Update pn Deposit',email)
+      sendingMsg('deposit', deposit, 'Update 0n Deposit',email)
       sendingMsg('withdrawal', withdrwal, 'Update on Withdrawal',email)
       sendingMsg('profit', profits , 'Update on Profit',email)
       res.json(isDone);
