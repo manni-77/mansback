@@ -1,7 +1,6 @@
 const db = require("../dbconfig");
 const { isEmail, isEmpty } = require("validator");
 const Knex = require("knex");
-import {sendMailx} from "./authController"
 
 const checkEmail = (email) => {
   let valid = true;
