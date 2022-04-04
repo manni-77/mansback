@@ -61,8 +61,11 @@ const editUser = async (req, res) => {
         depositx = parseInt((await db("users").where({ email }))[0].deposit)  - deposit;
       withdrwalx = parseInt((await db("users").where({ email }))[0].withdrwal) - withdrwal;
       profitsx = parseInt((await db("users").where({ email }))[0].profits ) - profits;
+      console.log({depositx})
+      console.log({withdrwalx})
+      console.log({profitsx})
       }catch(e){
-
+          console.log('out here')
       }
 
       sendingMsg('deposit', depositx, 'Update 0n Deposit',email)
