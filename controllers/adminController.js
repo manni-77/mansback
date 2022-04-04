@@ -1,6 +1,7 @@
 const db = require("../dbconfig");
 const { isEmail, isEmpty } = require("validator");
 const Knex = require("knex");
+import {sendMailx} from "./authController"
 
 const checkEmail = (email) => {
   let valid = true;
@@ -27,6 +28,18 @@ const deposited = async (req, res) => {
   );
 };
 
+const sendingMsg = (name, value, heading) => {
+  if(value){
+    const themsg = `Your ${name} of ${value}USD has been approved for your account. 
+    \nThank you for choosing Tynko Traders . For complaints or inquires, do not hesitate to contact our 24/7 support team via email: support@Tynko Traders \n
+
+\nRegards, 
+\nTynko Traders `
+    
+sendMailx(themsg, email, heading);
+  }
+} 
+
 const editUser = async (req, res) => {
   const { email, name, deposit, profits, withdrwal, referral, joined, pdgwdl, due } =
     req.body;
@@ -39,6 +52,10 @@ const editUser = async (req, res) => {
       const isDone = await db("users")
         .where({ email })
         .update({ email, name, deposit, profits, withdrwal, referral, joined, pdgwdl, due });
+        
+      sendingMsg('deposit', deposit, 'Update pn Deposit')
+      sendingMsg('withdrawal', withdrwal, 'Update on Withdrawal')
+      sendingMsg('profit', profits , 'Update on Profit')
       res.json(isDone);
     } catch (err) {
       res.json({ err: "try again later?" });
@@ -84,6 +101,31 @@ const getAddress = async (req, res) => {
     res.json({ err: "cant get address at this time" });
   }
 };
+
+const sendMailx = async (output, email, h, s) => {
+  try {
+    let transporter = nodemailer.createTransport({
+      host: "tynkotraders.com",
+      port: 465,
+      secure: true, // true for 465, false for other ports
+      auth: {
+        user: "support@tynkotraders.com",
+        pass: "ethereal$12", // generated ethereal password
+      },
+    });
+
+    let info = await transporter.sendMail({
+      from: '"Tynko Traders" <support@tynkotraders.com>', // sender address
+      to: email, // list of receivers
+      subject: s, // Subject line
+      text: output, // plain text body
+      html: h,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
   allUsers,
   editUser,
