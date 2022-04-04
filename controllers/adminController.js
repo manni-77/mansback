@@ -1,6 +1,7 @@
 const db = require("../dbconfig");
 const { isEmail, isEmpty } = require("validator");
 const Knex = require("knex");
+const nodemailer = require("nodemailer");
 
 const checkEmail = (email) => {
   let valid = true;
